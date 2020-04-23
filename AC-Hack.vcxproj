@@ -148,6 +148,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AC-Hack.cpp" />
+    <ClCompile Include="Offsets.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Offsets.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
