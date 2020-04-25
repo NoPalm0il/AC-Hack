@@ -4,6 +4,7 @@
 Console::Console()
 {
 	command = "";
+	canHack = false;
 
 	mem = Memory();
 
@@ -32,6 +33,16 @@ bool Console::commandChk(string str)
 	return false;
 }
 
+bool Console::hackChk(string str)
+{
+	for (string strchk : hacks) {
+		if (strchk == str)
+			return true;
+	}
+
+	return false;
+}
+
 void Console::startcli()
 {
 	while (true)
@@ -44,14 +55,17 @@ void Console::startcli()
 			cout << "AChack32 > ";
 		if (commandChk(command)) {
 			if (command == "help") {
-				cout << "Showing avaiable commands: \n\n";
+				cout << "Showing avaiable commands: \n";
+				cout << "First thing is to execute START or is not possible to hack\n";
+				cout << endl;
+
 				for (string str : cmds) {
 					if (str == "hacks") {
 						string comp = " \"shows avaiable hacks\"";
 						cout << str << comp << endl;
 					}
 					else if (str == "hack") {
-						string comp = " \"{hack-name}\"";
+						string comp = " \"enters hack cli\"";
 						cout << str << comp << endl;
 					}
 					else if (str == "START") {
@@ -79,7 +93,10 @@ void Console::startcli()
 					cout << str << endl;
 			}
 			else if (command == "hack") {
-				hackcli();
+				if (canHack)
+					hackcli();
+				else
+					cout << "cannot start hacking.\n";
 			}
 			else if (command == "restart") {
 				startMem();
@@ -102,23 +119,32 @@ void Console::startcli()
 
 void Console::startMem() {
 	//while game is not open
-	while (!mem.genPID());
+	if (mem.genPID()) {
+		cout << "pid retrieved.\n";
+		//creates process Handle
+		if (mem.genHandle() != NULL) {
+			canHack = true;
+			cout << "handle created\n";
+		}
+		else
+			cout << "failed to create handle\n";
+	}
 
-	//creates process Handle
-	mem.genHandle();
-
-	//With all set up, load hacks to start writing
-	Hacks hck = Hacks(mem);
-
-	cout << "Memory ready, hacks loaded.\n";
+	cout << "failed to retrieve pid.\n";
 }
 
 
 void Console::hackcli() {
-	cout << "Hack cli started type exit to leave hackcli";
+	cout << "Hack cli started type exit to leave hackcli\n";
 	while (true) {
-		cout << "\033[0;32mAChack\033[0;35m32\033[0;33m > \033[0m";
+		cout << "\033[0;31mAChackCLI\033[0;35m > \033[0m";
 		cin >> command;
+
+		if (hackChk(command)) {
+
+		}
+		else
+			cout << "enter a correct hack\n";
 	}
 }
 

@@ -22,13 +22,15 @@ BOOL Memory::genPID()
 }
 
 
-void Memory::genHandle() {
+HANDLE Memory::genHandle() {
 	hProcess = OpenProcess(PROCESS_ALL_ACCESS, 0, PID);
 
 	if (hProcess == NULL) {
 		cout << "Failed to generate handle! error: " << GetLastError() <<endl;
+		return NULL;
 	}
 	cout << "Handle generated.\n";
+	return hProcess;
 }
 
 //reads the source pointer to a target pointer (buffer), targetPtr is the data buffer

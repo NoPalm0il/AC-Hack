@@ -10,7 +10,7 @@ private:
 	DWORD PID;
 public:
 	BOOL genPID();
-	void genHandle();
+	HANDLE genHandle();
 	void targetRead16(LPCVOID, LPVOID);
 	void targetRead32(LPCVOID, LPVOID);
 	void targetWrite16(LPVOID, LPCVOID);

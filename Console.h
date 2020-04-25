@@ -14,8 +14,10 @@ private:
 	string command;
 	vector<string> cmds;
 	vector<string> hacks;
+	bool canHack;
 
 	bool commandChk(string);
+	bool hackChk(string);
 	void printLogo();
 	void printWlcm();
 	void presentation();
