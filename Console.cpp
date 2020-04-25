@@ -1,6 +1,5 @@
 #include "Console.h"
 
-
 Console::Console()
 {
 	command = "";
@@ -16,9 +15,9 @@ Console::Console()
 	cmds.push_back("EXIT");
 	cmds.push_back("clear");
 
-	hacks.push_back("godMode");
-	hacks.push_back("maxAmmo");
-	hacks.push_back("speed");
+	hacksvtr.push_back(Hack("godMode"));
+	hacksvtr.push_back(Hack("maxAmmo"));
+	hacksvtr.push_back(Hack("speed"));
 	//hacks.push_back("");
 }
 
@@ -35,8 +34,8 @@ bool Console::commandChk(string str)
 
 bool Console::hackChk(string str)
 {
-	for (string strchk : hacks) {
-		if (strchk == str)
+	for (Hack hk : hacksvtr) {
+		if (hk.name == str)
 			return true;
 	}
 
@@ -47,7 +46,7 @@ void Console::startcli()
 {
 	while (true)
 	{
-		//\033 esc mode to print color [0;32 is formated for [background; text color/foreground add m in the final
+		//\033 esc mode to print color [0;32 is formated for [background; text-color/foreground add m in the final
 		//\033[0;32m
 		cout << "\033[0;32mAChack\033[0;35m32\033[0;33m > \033[0m";
 		cin >> command;
@@ -69,7 +68,7 @@ void Console::startcli()
 						cout << str << comp << endl;
 					}
 					else if (str == "START") {
-						string comp = " \"Type this command when game is open or no hacking\"";
+						string comp = " \"Type this command when game is open or hacks cant start\"";
 						cout << str << comp << endl;
 					}
 					else if (str == "restart") {
@@ -85,12 +84,11 @@ void Console::startcli()
 						cout << str << comp << endl;
 					}
 				}
-				cout << endl;
 			}
 			else if (command == "hacks") {
 				cout << "Showing avaiable hacks:\n\n";
-				for (string str : hacks)
-					cout << str << endl;
+				for (Hack str : hacksvtr)
+					cout << str.name << endl;
 			}
 			else if (command == "hack") {
 				if (canHack)
@@ -99,7 +97,7 @@ void Console::startcli()
 					cout << "cannot start hacking.\n";
 			}
 			else if (command == "restart") {
-				startMem();
+				//startMem();
 			}
 			else if (command == "START") {
 				startMem();
@@ -108,8 +106,9 @@ void Console::startcli()
 				exit(0);
 			}
 			else if (command == "clear") {
-				startMem();
+				system("CLS");
 			}
+			cout << endl;
 		}
 		else {
 			cerr << "command not found\n\n";
@@ -129,22 +128,69 @@ void Console::startMem() {
 		else
 			cout << "failed to create handle\n";
 	}
-
-	cout << "failed to retrieve pid.\n";
+	else
+		cout << "failed to retrieve pid.\n";
 }
 
 
 void Console::hackcli() {
-	cout << "Hack cli started type exit to leave hackcli\n";
 	while (true) {
+		system("CLS");
+		for (Hack hk : hacksvtr) {
+			//if's off background red
+			if (!hk.onbool)
+				cout << "   \033[41;30m" << hk.name << "\033[0m   ";
+			else
+				cout << "   \033[42;30m" << hk.name << "\033[0m   ";
+		}
+		cout << endl << endl;
+
+		cout << "Hack cli started type exit to leave hackcli\n\n";
+
 		cout << "\033[0;31mAChackCLI\033[0;35m > \033[0m";
 		cin >> command;
 
-		if (hackChk(command)) {
+		if (command == "exit")
+			break;
 
+		if (hackChk(command)) {
+			if (command == "godMode") {
+				
+				if (hacksvtr.at(0).onbool) {
+					//thread td(godModeHck);
+					//td.join();
+					hacksvtr.at(0).onbool = false;
+				}
+				else {
+					thread td1([this] {
+						Hacks hk = Hacks(mem);
+
+						while (true) {
+							hk.godMode();
+						}
+						});
+					//hacksvtr.at(0).td = td;
+					hacksvtr.at(0).onbool = true;
+				}
+			}
+			else if (command == "maxAmmo") {
+
+			}
+			else if (command == "speed") {
+
+			}
 		}
 		else
 			cout << "enter a correct hack\n";
+	}
+
+	startcli();
+}
+
+void Console::godModeHck() {
+	Hacks hck = Hacks(Console::mem);
+	while (true) {
+
 	}
 }
 

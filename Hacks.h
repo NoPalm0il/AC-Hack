@@ -13,7 +13,7 @@ public:
 	void fly();
 	void norecoil();
 
-	Hacks(Memory);
+	Hacks(Memory mem);
 private:
 	Memory mem;
 	//To get to the Address do: BaseAddress + OffsetLocalPlayer + Offsets frome the list below.
