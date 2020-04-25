@@ -2,36 +2,35 @@
 #include <Windows.h>
 #include <thread>
 
-#include "Memory.h";
-#include "Hacks.h";
+#include "Memory.h"
+#include "Hacks.h"
+#include "Console.h"
 
 using namespace std;
 int main()
 {
-	Memory mem;
-	while (!mem.genPID());
-
-	mem.genHandle();
-
-	Hacks hck = Hacks(mem);
 	
 
-	cout << "Memory ready, hacks loaded.\n";
-
-	thread flythread([mem] {
+	/*thread thread1([mem] {
 		Hacks ss = Hacks(mem);
 
-		ss.fly();
+		ss.speed();
 		});
 
+	thread1.join();
+	
 	while (1) {
 		//cout << "main thread;\n";
 		hck.godMode();
 		hck.maxAmmo();
-		//hck.sanic();
 
 		Sleep(200);
 	}
+	*/
+
+	Console cli;
+
+	cli.startcli();
 
 	return 0;
 }

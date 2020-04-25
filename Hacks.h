@@ -1,9 +1,19 @@
 #pragma once
 #include "Memory.h"
 #include <Windows.h>
+#include <thread>
 
 class Hacks
 {
+public:
+	void godMode();
+	void maxAmmo();
+	void speed();
+	void setPlrOffset();
+	void fly();
+	void norecoil();
+
+	Hacks(Memory);
 private:
 	Memory mem;
 	//To get to the Address do: BaseAddress + OffsetLocalPlayer + Offsets frome the list below.
@@ -13,12 +23,14 @@ private:
 	__int32 BaseAddress;
 	__int32 OffsetLocalPlayer;
 	__int32 LocalPlayer;
-	__int32* LocalPlayerPtr;
 
 	//offsets from local player
 	__int32 m_XPos;
 	__int32 m_YPos;
 	__int32 m_ZPos;
+
+	__int32 m_gravity;
+	__int32	m_noclip;
 
 	__int32 m_isPosMoving;
 	__int32 m_Speed;
@@ -67,13 +79,5 @@ private:
 	__int32 g_GameVersion;
 	__int32 dbg_FlySpeed;
 	__int32 EngineState_Test;
-public:
-	void godMode();
-	void maxAmmo();
-	void sanic();
-	void setPlrOffset();
-	void fly();
-
-	Hacks(Memory);
 };
 

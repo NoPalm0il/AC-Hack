@@ -16,6 +16,8 @@ public:
 	void targetWrite16(LPVOID, LPCVOID);
 	void targetWrite32(LPVOID, LPCVOID);
 
+	void ShowConsoleCursor(bool);
+
 	Memory();
 
 };

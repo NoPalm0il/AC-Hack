@@ -12,37 +12,61 @@ void Hacks::maxAmmo()
 	mem.targetWrite32(LPVOID(LocalPlayer + m_Flashbangs), (LPCVOID)&grenade);
 }
 
-void Hacks::sanic()
+void Hacks::speed()
 {
-	int speed = 50;
-	mem.targetWrite32(LPVOID(LocalPlayer + m_Speed), (LPCVOID)&speed);
-}
-
-void Hacks::fly() {
-	int fspeed = 0;
-
+	int speed = 0;
+	
 	while (1) {
-		if (GetAsyncKeyState(VK_SPACE) & 0x80000000) {
-			mem.targetRead32((LPCVOID)&fspeed, LPVOID(LocalPlayer + dbg_FlySpeed));
-
-			fspeed+=5;
-
-			mem.targetWrite32(LPVOID(LocalPlayer + dbg_FlySpeed), (LPCVOID)&fspeed);
-
-			std::cout << fspeed << std::endl;
-		}
-		else if (GetAsyncKeyState(VK_LSHIFT) & 0x80000000) {
-			mem.targetRead32((LPCVOID)&fspeed, LPVOID(LocalPlayer + dbg_FlySpeed));
-			fspeed--;
-			mem.targetWrite32(LPVOID(LocalPlayer + dbg_FlySpeed), (LPCVOID)&fspeed);
-			std::cout << fspeed << std::endl;
+		if (GetAsyncKeyState('W') & 0x80000000) {
+			speed = 5;
+			mem.targetWrite32(LPVOID(LocalPlayer + m_Speed), (LPCVOID)&speed);
 		}
 	}
-		
+
 }
 
-void Hacks::setPlrOffset() {
-	mem.targetRead32((LPCVOID)(BaseAddress + OffsetLocalPlayer), LocalPlayerPtr);
+//not working, WIP
+void Hacks::norecoil()
+{
+	bool norecoil = 0;
+	mem.targetWrite32(LPVOID(LocalPlayer + m_MouseShotSensitivity), (LPCVOID)&norecoil);
+}
+
+//not working, WIP
+void Hacks::fly()
+{
+	float zpos = 0;
+	float ypos = 0;
+	float xpos = 0;
+	int speed = 0;
+	int nclip = 0;
+
+	mem.targetWrite32(LPVOID(LocalPlayer + m_noclip), (LPCVOID)&nclip);
+	//while (1) {
+	//	if (GetAsyncKeyState(VK_SPACE) & 0x80000000) {
+	//		mem.targetRead32(LPCVOID(LocalPlayer + m_ZPos), &zpos);
+
+	//		zpos += (float)0.001;
+
+	//		mem.targetWrite32(LPVOID(LocalPlayer + m_ZPos), (LPCVOID)&zpos);
+	//		//mem.targetWrite32(LPVOID(LocalPlayer + m_gravity), (LPCVOID)&gravity);
+	//		
+
+	//	}
+	//	else if (GetAsyncKeyState(VK_LSHIFT) & 0x80000000) {
+	//		mem.targetRead32(LPCVOID(LocalPlayer + m_ZPos), &zpos);
+
+	//		zpos -= (float)0.001;
+
+	//		mem.targetWrite32(LPVOID(LocalPlayer + m_ZPos), (LPCVOID)&zpos);
+
+	//	}
+	//}
+}
+
+void Hacks::setPlrOffset()
+{
+	mem.targetRead32((LPCVOID)(BaseAddress + OffsetLocalPlayer), &LocalPlayer);
 }
 
 Hacks::Hacks(Memory mem) {
@@ -50,14 +74,16 @@ Hacks::Hacks(Memory mem) {
 	BaseAddress = 0x400000;
 	OffsetLocalPlayer = 0x10F4F4;
 	LocalPlayer = 0;
-	LocalPlayerPtr = &LocalPlayer;
 
-	m_XPos = 0x0038;
-	m_YPos = 0x003C;
-	m_ZPos = 0x0040;
+	m_XPos = 0x34;
+	m_YPos = 0x38;
+	m_ZPos = 0x3c;
+
+	m_gravity = 0x54;//1 fast fall?
+	m_noclip = 0x58;//-1 active
 
 	m_isPosMoving = 0x0070;
-	m_Speed = 0x0080;
+	m_Speed = 0x80;
 	m_Health = 0x00F8;
 	m_Vest = 0x00FC;
 	m_AmmoMags = 0x0128;
