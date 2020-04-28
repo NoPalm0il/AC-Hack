@@ -10,27 +10,17 @@ using namespace std;
 int main()
 {
 	
-
-	/*thread thread1([mem] {
-		Hacks ss = Hacks(mem);
-
-		ss.speed();
-		});
-
-	thread1.join();
-	
-	while (1) {
-		//cout << "main thread;\n";
-		hck.godMode();
-		hck.maxAmmo();
-
-		Sleep(200);
-	}
-	*/
-
 	Console cli;
 
-	cli.startcli();
+	while (true) {
+		cli.startcli();
+
+
+		Hacks hks = Hacks(cli.mem);
+		std::thread godtd([&hks]() {
+			hks.godMode();
+			});
+	}
 
 	return 0;
 }

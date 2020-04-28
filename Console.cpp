@@ -5,8 +5,6 @@ Console::Console()
 	command = "";
 	canHack = false;
 
-	mem = Memory();
-
 	cmds.push_back("help");
 	cmds.push_back("hacks");
 	cmds.push_back("hack");
@@ -44,6 +42,7 @@ bool Console::hackChk(string str)
 
 void Console::startcli()
 {
+	presentation();
 	while (true)
 	{
 		//\033 esc mode to print color [0;32 is formated for [background; text-color/foreground add m in the final
@@ -134,18 +133,20 @@ void Console::startMem() {
 
 
 void Console::hackcli() {
+	Hacks hcks = Hacks(mem);
 	while (true) {
 		system("CLS");
+		cout << endl << endl;
 		for (Hack hk : hacksvtr) {
 			//if's off background red
 			if (!hk.onbool)
-				cout << "   \033[41;30m" << hk.name << "\033[0m   ";
+				cout << "            \033[41;30m" << hk.name << "\033[0m   ";
 			else
-				cout << "   \033[42;30m" << hk.name << "\033[0m   ";
+				cout << "            \033[42;30m" << hk.name << "\033[0m   ";
 		}
 		cout << endl << endl;
 
-		cout << "Hack cli started type exit to leave hackcli\n\n";
+		cout << "Just type the name of the wanted hack to exe, \"exit\" leaves hack cli\n\n\n";
 
 		cout << "\033[0;31mAChackCLI\033[0;35m > \033[0m";
 		cin >> command;
@@ -162,36 +163,43 @@ void Console::hackcli() {
 					hacksvtr.at(0).onbool = false;
 				}
 				else {
-					thread td1([this] {
-						Hacks hk = Hacks(mem);
-
-						while (true) {
-							hk.godMode();
-						}
-						});
+					
 					//hacksvtr.at(0).td = td;
 					hacksvtr.at(0).onbool = true;
 				}
 			}
 			else if (command == "maxAmmo") {
+				if (hacksvtr.at(1).onbool) {
+					//thread td(godModeHck);
+					//td.join();
+					hacksvtr.at(1).onbool = false;
+				}
+				else {
 
+					//hacksvtr.at(0).td = td;
+					hacksvtr.at(1).onbool = true;
+				}
 			}
 			else if (command == "speed") {
+				if (hacksvtr.at(2).onbool) {
+					//thread td(godModeHck);
+					//td.join();
+					hacksvtr.at(2).onbool = false;
+				}
+				else {
 
+					//hacksvtr.at(0).td = td;
+					hacksvtr.at(2).onbool = true;
+				}
 			}
 		}
-		else
+		else {
 			cout << "enter a correct hack\n";
+			Sleep(500);
+		}
 	}
 
 	startcli();
-}
-
-void Console::godModeHck() {
-	Hacks hck = Hacks(Console::mem);
-	while (true) {
-
-	}
 }
 
 

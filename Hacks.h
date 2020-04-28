@@ -1,6 +1,5 @@
 #pragma once
 #include "Memory.h"
-#include <Windows.h>
 #include <thread>
 
 class Hacks
@@ -16,6 +15,7 @@ public:
 	Hacks(Memory mem);
 private:
 	Memory mem;
+	std::thread hacksthread;
 	//To get to the Address do: BaseAddress + OffsetLocalPlayer + Offsets frome the list below.
 	//Like for rapidfire: ReadProcessMemory(hproc,(LPCVOID=(Base+OffsetSpeed),&EndAddress_Speed, 4,NULL);
 	//Base = BaseAddress + OffsetLocalPlayer (local player)

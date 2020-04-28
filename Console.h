@@ -11,7 +11,6 @@ using namespace std;
 class Console
 {
 private:
-	Memory mem;
 	string command;
 	vector<string> cmds;
 	vector<Hack> hacksvtr;
@@ -24,9 +23,8 @@ private:
 	void presentation();
 	void hackcli();
 
-	void godModeHck();
-
 public:
+	Memory mem;
 	void startcli();
 	void startMem();
 	Console();
